@@ -11,12 +11,12 @@ public class MoveButtons : MonoBehaviour
 
     public void GotoLeft()
     {
-        Cam.Goto(RoomFlowManager.instance.CurrentRoom.Left);
+        RoomFlowManager.instance.RoomFlow.OnNext(RoomFlowManager.instance.CurrentRoom.Left);
     }
 
     public void GotoRight()
     {
-        Cam.Goto(RoomFlowManager.instance.CurrentRoom.Right);
+        RoomFlowManager.instance.RoomFlow.OnNext(RoomFlowManager.instance.CurrentRoom.Right);
     }
 
     void Start()

@@ -13,7 +13,7 @@ public enum ObjectState
     Fall
 }
 
-public class IngameObject : MonoBehaviour
+public class IngameItem: MonoBehaviour
 {
     public Subject<ObjectState> StateStream = new Subject<ObjectState>();
     public ObjectState State;
@@ -25,12 +25,8 @@ public class IngameObject : MonoBehaviour
         StateStream.Where(x => DummyChild && x.Equals(ObjectState.Placed))
             .Subscribe(_ => Destroy(DummyChild.gameObject));
 
-       
-
         StateStream.Where(x => DummyChild && x.Equals(ObjectState.Picked))
          .Subscribe(_ => Destroy(DummyChild.gameObject));
-        
-
 
         //Float
         StateStream.Where(x => DummyChild && x.Equals(ObjectState.Float))

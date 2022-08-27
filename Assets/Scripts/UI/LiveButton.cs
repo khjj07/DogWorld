@@ -22,19 +22,17 @@ public class LiveButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
         ScaleSquence.Kill();
     }
 
-    public void OnPointerClick(PointerEventData pointerEventData)
+    public virtual void OnPointerClick(PointerEventData pointerEventData)
     {
-
         transform.DOKill();
-        ScaleSquence.Append(transform.DOScale(new Vector3(1, 1, 1), 0.1f).OnComplete(()=> { OnClick.Invoke(); }))
-            .SetAutoKill(true);
+        transform.DOScale(new Vector3(1, 1, 1), 0.1f).OnComplete(()=> { OnClick.Invoke(); });
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
 
         transform.DOKill();
-        ScaleSquence.Append(transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f));
+        transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f);
 
     }
 
@@ -42,6 +40,6 @@ public class LiveButton : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     public void OnPointerExit(PointerEventData pointerEventData)
     {
         transform.DOKill();
-        ScaleSquence.Append(transform.DOScale(new Vector3(1, 1, 1), 0.1f));
+        transform.DOScale(new Vector3(1, 1, 1), 0.1f);
     }
 }

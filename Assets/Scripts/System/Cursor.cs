@@ -8,14 +8,14 @@ using System;
 
 public class Cursor : Singleton<Cursor>
 {
-    public IngameObject FollowTarget;
-    public IngameObject HoverTarget;
+    public IngameItem FollowTarget;
+    public IngameItem HoverTarget;
     public Dummy DummyChild;
     public float DragDistinct;
-    private void SetTarget(IngameObject newObject)
+    private void SetTarget(IngameItem newItem)
     {
         var child = Instantiate(DummyChild);
-        FollowTarget = newObject;
+        FollowTarget = newItem;
         FollowTarget.DummyChild = child;
         child.transform.parent = FollowTarget.transform;
 
