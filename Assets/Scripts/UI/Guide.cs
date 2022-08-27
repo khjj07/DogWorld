@@ -15,7 +15,6 @@ public class Guide : MonoBehaviour
     private Coroutine TypeRoutine;
     public IEnumerator Print(string message)
     {
-        Debug.Log(11111);
         if (!IsPlaying)
         {
             IsPlaying = true;
@@ -43,5 +42,11 @@ public class Guide : MonoBehaviour
     {
         if(Index<GuideMessages.Count)
             TypeRoutine = StartCoroutine(Print(GuideMessages[Index]));
+        else
+        {
+            Index = 0;
+            GameStateManager.instance.Next();
+        }
+
     }
 }
