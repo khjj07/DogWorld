@@ -68,7 +68,7 @@ public class IngameItem: MonoBehaviour
             Cursor.instance.HoverTarget = null;
     }
 
-    public void OnCollisionEnter(Collision collision)
+    public void OnCollisionStay(Collision collision)
     {
         if(State.Equals(ObjectState.Fall) && collision.transform.CompareTag("Floor"))
             StateStream.OnNext(ObjectState.Placed);

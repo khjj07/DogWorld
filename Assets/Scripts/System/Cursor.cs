@@ -47,11 +47,16 @@ public class Cursor : Singleton<Cursor>
             .Subscribe(_ => MousePositioning())
             .AddTo(gameObject);
 
-      
-        this.ObserveEveryValueChanged(x=>transform.position)
-          .Where(_=>HoverTarget&&Input.GetMouseButton(0))
-          .Subscribe(x => HoverTarget.transform.position=x)
-           .AddTo(gameObject);
+
+       this.ObserveEveryValueChanged(x => transform.position)
+          .Where(_ => HoverTarget && Input.GetMouseButton(0))
+          .Subscribe(x => HoverTarget.transform.position = x)
+          .AddTo(gameObject);
+        var clickStream = this.UpdateAsObservable()
+               .Where(_ => Input.GetMouseButtonDown(0));
+
+        clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(300)))
+               .Where(x => x.Count >= 2)
+               .Subscribe(_=>Debug.Log("DoubleClick"));
     }
-   
 }
