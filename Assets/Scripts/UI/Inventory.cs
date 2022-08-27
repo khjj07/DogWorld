@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using System.Threading.Tasks;
 public class Inventory : Singleton<Inventory>
 {
     public List<Item> ItemList;
@@ -17,6 +19,18 @@ public class Inventory : Singleton<Inventory>
         }
         return false;
 
+    }
+
+    public bool Full()
+    {
+        foreach (var item in ItemList)
+        {
+            if (!(item.ItemSprite))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Update is called once per frame
