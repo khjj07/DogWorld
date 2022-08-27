@@ -17,6 +17,8 @@ public class GameStateManager : Singleton<GameStateManager>
         }
     }
 
+
+
     public void Change(GameState newState)
     {
         if (currentState != null)

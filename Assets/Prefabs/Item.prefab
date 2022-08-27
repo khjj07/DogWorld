@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3828208262459599235}
   - component: {fileID: 3828208262459599246}
   - component: {fileID: -357821987393584504}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Item
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -100,7 +100,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   State: 1
-  Type: 0
 --- !u!54 &3828208262459599246
 Rigidbody:
   m_ObjectHideFlags: 0

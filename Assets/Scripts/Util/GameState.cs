@@ -8,12 +8,13 @@ public class GameState : MonoBehaviour
     public GameState nextState;
     public UnityEvent onStateEnableEvent;
     public UnityEvent onStateExitEvent;
-    /*
+   /*
     protected void OnEnable()
     {
         ChangeState(this);
     }
     */
+
     public void OnStateEnter()
     {
         gameObject.SetActive(true);
