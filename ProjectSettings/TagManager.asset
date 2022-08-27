@@ -7,6 +7,7 @@ TagManager:
   - Floor
   - RayArea
   - Wall
+  - Item
   layers:
   - Default
   - TransparentFX

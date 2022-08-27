@@ -5,45 +5,53 @@ using UnityEngine.EventSystems;
 using UniRx;
 using UniRx.Triggers;
 using System.Linq;
+using System;
 public enum ObjectState
 {
-    Picked,
     Placed,
     Float,
     Fall
 }
 
-public class IngameItem: MonoBehaviour
+public class IngameItem : MonoBehaviour
 {
     public Subject<ObjectState> StateStream = new Subject<ObjectState>();
     public ObjectState State;
-    public Dummy DummyChild;
 
-    private void Start()
+    public void Start()
     {
-        StateStream.Subscribe(x => State = x);
-        StateStream.Where(x => DummyChild && x.Equals(ObjectState.Placed))
-            .Subscribe(_ => Destroy(DummyChild.gameObject));
+        var renderer = GetComponent<SpriteRenderer>();
+        GetComponent<BoxCollider>().size = new Vector3(renderer.size.x, renderer.size.y,0.01f);
+        StateStream.Subscribe(x => { State = x;
+            Debug.Log("State : " + State);
+        });
 
-        StateStream.Where(x => DummyChild && x.Equals(ObjectState.Picked))
-         .Subscribe(_ => Destroy(DummyChild.gameObject));
-
-        //Float
-        StateStream.Where(x => DummyChild && x.Equals(ObjectState.Float))
-         .Subscribe(_ => Destroy(DummyChild.gameObject));
         StateStream.Where(x => x.Equals(ObjectState.Float))
-         .Subscribe(_ => GetComponent<Rigidbody>().isKinematic=true);
+         .Subscribe(_ => {
+             GetComponent<Rigidbody>().isKinematic = true;
+             GetComponent<BoxCollider>().isTrigger = true;
+         });
+
+        StateStream.Where(x => x.Equals(ObjectState.Placed))
+        .Subscribe(_ => {
+            GetComponent<Rigidbody>().isKinematic = false;
+            GetComponent<BoxCollider>().isTrigger = false;
+        });
 
         //Fall
         StateStream.Where(x => x.Equals(ObjectState.Fall))
-        .Subscribe(_ => GetComponent<Rigidbody>().isKinematic = false);
+         .Subscribe(_ => {
+             GetComponent<Rigidbody>().isKinematic = false;
+             GetComponent<BoxCollider>().isTrigger = false;
+         });
+        StateStream.OnNext(State);
 
     }
 
 
     public void OnMouseEnter()
     {
-        if (State.Equals(ObjectState.Placed))
+        if (State.Equals(ObjectState.Placed) && !Cursor.instance.FollowTarget && !Cursor.instance.HoverTarget )
         {
             Cursor.instance.HoverTarget = this;
             this.OnMouseDownAsObservable()
@@ -56,7 +64,6 @@ public class IngameItem: MonoBehaviour
                     Cursor.instance.HoverTarget = null;
                     StateStream.OnNext(ObjectState.Fall);
                     var pos = transform.position;
-                    pos.z = pos.z-1.2f;
                     transform.position = pos;
                 });
 
@@ -70,7 +77,7 @@ public class IngameItem: MonoBehaviour
 
     public void OnCollisionStay(Collision collision)
     {
-        if(State.Equals(ObjectState.Fall) && collision.transform.CompareTag("Floor"))
+        if(State.Equals(ObjectState.Fall) && (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Item")))
             StateStream.OnNext(ObjectState.Placed);
     }
 }

@@ -4,33 +4,40 @@ using UnityEngine;
 using UniRx.Triggers;
 using UniRx;
 using System;
-
+using System.Threading;
+using System.Threading.Tasks;
 
 public class Cursor : Singleton<Cursor>
 {
     public IngameItem FollowTarget;
     public IngameItem HoverTarget;
-    public Dummy DummyChild;
     public float DragDistinct;
-    private void SetTarget(IngameItem newItem)
+    public void SetTarget(IngameItem newItem)
     {
-        var child = Instantiate(DummyChild);
         FollowTarget = newItem;
-        FollowTarget.DummyChild = child;
-        child.transform.parent = FollowTarget.transform;
+        
+     
 
-        //Dummy
-        FollowTarget.StateStream.OnNext(ObjectState.Picked);
-        this.UpdateAsObservable()
+        var followStream = this.UpdateAsObservable()
+            .TakeUntil(newItem.OnMouseDownAsObservable())
             .Subscribe(_ => FollowTarget.transform.position = transform.position)
-            .AddTo(child);
+            .AddTo(newItem);
 
-        this.UpdateAsObservable()
-           .Where(_=>Input.GetMouseButtonDown(0))
-           .Subscribe(_ => {
-               FollowTarget.StateStream.OnNext(ObjectState.Placed);
-               FollowTarget = null;})
-           .AddTo(child);
+
+        FollowTarget.StateStream.OnNext(ObjectState.Float);
+
+        newItem.OnMouseDownAsObservable()
+        .Take(1)
+        .Select(x=>transform.position)
+        .Subscribe(x =>
+        {
+            var pos = x;
+            transform.position = pos;
+            FollowTarget.transform.position = pos;
+            FollowTarget.StateStream.OnNext(ObjectState.Fall);
+            FollowTarget = null;
+        });
+
     }
     public void MousePositioning()
     {
@@ -40,6 +47,10 @@ public class Cursor : Singleton<Cursor>
         {
             transform.position =  hit.point;
         }
+    }
+    public async void TryAddToInventory(IngameItem item)
+    {
+        Inventory.instance.Add(item.GetComponent<SpriteRenderer>().sprite);
     }
     public void Start()
     {
@@ -52,11 +63,13 @@ public class Cursor : Singleton<Cursor>
           .Where(_ => HoverTarget && Input.GetMouseButton(0))
           .Subscribe(x => HoverTarget.transform.position = x)
           .AddTo(gameObject);
+
         var clickStream = this.UpdateAsObservable()
                .Where(_ => Input.GetMouseButtonDown(0));
 
         clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(300)))
-               .Where(x => x.Count >= 2)
-               .Subscribe(_=>Debug.Log("DoubleClick"));
+               .Where(x => HoverTarget && x.Count >= 2)
+               .Select(x=>HoverTarget)
+               .Subscribe(_=>Task.Run(()=>TryAddToInventory(HoverTarget)));
     }
 }

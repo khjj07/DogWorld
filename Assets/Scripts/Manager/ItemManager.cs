@@ -1,30 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Linq;
 
-public enum ItemType
-{
-    Cushion,
-    Ball
-}
 
-public class ItemManager : MonoBehaviour
+public class ItemManager : Singleton<ItemManager>
 {
 
-    public void MakeInstance(ItemType itemType,Sprite itemSprite)
+    public IngameItem IngameItemPrefab;
+    public void MakeInstance(Sprite itemSprite)
     {
-
+        if(itemSprite)
+        {
+            var instance = Instantiate(IngameItemPrefab.gameObject);
+            instance.transform.localScale = new Vector3(4, 4, 1);
+            instance.GetComponent<SpriteRenderer>().sprite = itemSprite;
+            Cursor.instance.SetTarget(instance.GetComponent<IngameItem>());
+        }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
