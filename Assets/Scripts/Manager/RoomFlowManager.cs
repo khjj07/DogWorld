@@ -11,6 +11,10 @@ public class RoomFlowManager : Singleton<RoomFlowManager>
     {
         RoomFlow.Subscribe(room => CurrentRoom = room);
     }
+    public void SetRoom(Room room)
+    {
+        RoomFlow.OnNext(room);
+    }
 
     // Update is called once per frame
     void Update()

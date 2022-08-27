@@ -12,6 +12,8 @@ public class Item : LiveButton
     public override void OnPointerClick(PointerEventData pointerEventData)
     {
         ItemManager.instance.MakeInstance(ItemSprite);
+        ItemSprite = null;
+        GetComponent<Image>().sprite = ItemSprite;
     }
 
     public void Initialize()
@@ -20,7 +22,8 @@ public class Item : LiveButton
     }
     public void Initialize(Sprite newSprite)
     {
-        GetComponent<Image>().sprite = newSprite;
+        ItemSprite = newSprite;
+        GetComponent<Image>().sprite = ItemSprite;
     }
 
     private void Start()

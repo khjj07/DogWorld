@@ -12,10 +12,10 @@ public class CameraMove : MonoBehaviour
     public void Goto(Room room)
     {
         var pos = room.transform.position;
-        pos.z = transform.position.z;
         transform.DOMove(pos, MoveDuration)
             .SetEase(moveEase);
     }
+
     void Start()
     {
         RoomFlowManager.instance.RoomFlow.Subscribe(room => Goto(room));

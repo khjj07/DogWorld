@@ -48,9 +48,11 @@ public class Cursor : Singleton<Cursor>
             transform.position =  hit.point;
         }
     }
-    public async void TryAddToInventory(IngameItem item)
+    public void TryAddToInventory(IngameItem item)
     {
-        Inventory.instance.Add(item.GetComponent<SpriteRenderer>().sprite);
+        bool success = Inventory.instance.Add(item.transform.GetComponent<SpriteRenderer>().sprite);
+        if (success)
+            Destroy(item.gameObject);
     }
     public void Start()
     {
@@ -65,11 +67,10 @@ public class Cursor : Singleton<Cursor>
           .AddTo(gameObject);
 
         var clickStream = this.UpdateAsObservable()
-               .Where(_ => Input.GetMouseButtonDown(0));
+                .Select(x=>HoverTarget)
+               .Where(_ => HoverTarget && Input.GetMouseButtonDown(1))
+               .Subscribe(x => TryAddToInventory(x))
+               .AddTo(gameObject);
 
-        clickStream.Buffer(clickStream.Throttle(TimeSpan.FromMilliseconds(300)))
-               .Where(x => HoverTarget && x.Count >= 2)
-               .Select(x=>HoverTarget)
-               .Subscribe(_=>Task.Run(()=>TryAddToInventory(HoverTarget)));
     }
 }

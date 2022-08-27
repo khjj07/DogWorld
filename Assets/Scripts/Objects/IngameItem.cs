@@ -21,7 +21,7 @@ public class IngameItem : MonoBehaviour
     public void Start()
     {
         var renderer = GetComponent<SpriteRenderer>();
-        GetComponent<BoxCollider>().size = new Vector3(renderer.size.x, renderer.size.y,0.01f);
+        GetComponent<BoxCollider>().size = new Vector3(renderer.size.x, renderer.size.y,0.1f);
         StateStream.Subscribe(x => { State = x;
             Debug.Log("State : " + State);
         });
