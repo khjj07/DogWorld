@@ -27,13 +27,13 @@ public class Guide : MonoBehaviour
                 yield return new WaitForSeconds(TypeDuration);
             }
             IsPlaying = false;
-            Index += Index;
+            Index +=1;
         }
         else
         {
             Text.text = message;
             IsPlaying = false;
-            Index += Index;
+            Index +=1;
             StopCoroutine(TypeRoutine);
         }
         
@@ -41,6 +41,7 @@ public class Guide : MonoBehaviour
     // Start is called before the first frame update
     public void NextGuide()
     {
-        TypeRoutine = StartCoroutine(Print(GuideMessages[Index]));
+        if(Index<GuideMessages.Count)
+            TypeRoutine = StartCoroutine(Print(GuideMessages[Index]));
     }
 }
