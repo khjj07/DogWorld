@@ -5,6 +5,7 @@ using UniRx;
 using TMPro;
 using System.Threading.Tasks;
 using System.Threading;
+using UnityEngine.Events;
 public class Guide : MonoBehaviour
 {
     public List<string> GuideMessages;
@@ -13,6 +14,7 @@ public class Guide : MonoBehaviour
     public float TypeDuration = 0.1f;
     public bool IsPlaying = false;
     private Coroutine TypeRoutine;
+    public UnityEvent OnGuideEnd;
     public IEnumerator Print(string message)
     {
         if (!IsPlaying)
@@ -45,6 +47,7 @@ public class Guide : MonoBehaviour
         else
         {
             Index = 0;
+            OnGuideEnd.Invoke();
             GameStateManager.instance.Next();
         }
 

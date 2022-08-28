@@ -7,7 +7,8 @@ using System.Linq;
 
 public class ItemManager : Singleton<ItemManager>
 {
-
+    public SupplyBox SupplyBoxPrefab;
+    public Transform BoxPos;
     public IngameItem IngameItemPrefab;
     public GameObject MakeInstance(Sprite itemSprite)
     {
@@ -19,6 +20,11 @@ public class ItemManager : Singleton<ItemManager>
             return instance;
         }
         return null;
+    }
+    public void MakeSupplyBox()
+    {
+        var instance = Instantiate(SupplyBoxPrefab.gameObject);
+        instance.transform.position = BoxPos.position;
     }
 
 

@@ -143,11 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb2b3cf673117d4c93d9b441258f1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Contents:
-  - {fileID: 21300000, guid: 251b64e93e59725498bdacd3b7846c9a, type: 3}
-  - {fileID: 21300000, guid: 8b7a86a0bd97b5349b87192a045b973e, type: 3}
-  - {fileID: 21300000, guid: fa3d86b65f7afb34cb574f04fb07fc4d, type: 3}
-  - {fileID: 21300000, guid: 3f32047930d016448ad9abfe7eb8b95c, type: 3}
+  Contents: []
   ingameItemPrefab: {fileID: 3828208262459599235, guid: 3becb64ea4d764040a44878eea1f2c9f, type: 3}
   Muzzle: {fileID: 3796390170940244178}
   AnimateDuration: 3

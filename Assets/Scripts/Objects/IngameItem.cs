@@ -66,9 +66,9 @@ public class IngameItem : MonoBehaviour
                     var pos = transform.position;
                     transform.position = pos;
                 });
-
         }
     }
+  
     public void OnMouseExit()
     {
         if (!Input.GetMouseButton(0))
@@ -77,6 +77,7 @@ public class IngameItem : MonoBehaviour
 
     public void OnCollisionStay(Collision collision)
     {
+      
         if(State.Equals(ObjectState.Fall) && (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Item")))
             StateStream.OnNext(ObjectState.Placed);
     }

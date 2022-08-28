@@ -39,6 +39,7 @@ public class Cursor : Singleton<Cursor>
         });
 
     }
+ 
     public void MousePositioning()
     {
         RaycastHit hit;
@@ -46,6 +47,9 @@ public class Cursor : Singleton<Cursor>
         if (Physics.Raycast(ray, out hit) && (hit.collider.CompareTag("Floor")|| hit.collider.CompareTag("Wall")))
         {
             transform.position =  hit.point;
+        }else if(Physics.Raycast(ray, out hit) && hit.collider.CompareTag("Furniture"))
+        {
+            transform.position = hit.point + new Vector3(0f, 0f, -4f);
         }
     }
     public void TryAddToInventory(IngameItem item)

@@ -6,15 +6,15 @@ public class UIState : GameState
 {
     public override void OnStateEnter()
     {
-        transform.position = new Vector3(960, 540, 0);
+        GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
         //GetComponent<Canvas>().enabled = true;
         onStateEnableEvent.Invoke();
     }
 
     public override void OnStateExit()
     {
-        transform.position = new Vector3(20000, 20000, 0);
-       //GetComponent<Canvas>().enabled = false;
+        GetComponent<RectTransform>().anchoredPosition = new Vector3(200000, 200000, 0);
+        //GetComponent<Canvas>().enabled = false;
         onStateExitEvent.Invoke();
     }
 }

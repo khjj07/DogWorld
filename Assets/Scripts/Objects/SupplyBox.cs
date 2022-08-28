@@ -9,16 +9,22 @@ using System.Threading.Tasks;
 
 public class SupplyBox : MonoBehaviour
 {
-    public List<Sprite> Contents;
+    public int Number=5;
     public IngameItem ingameItemPrefab;
     public Transform Muzzle;
     public float AnimateDuration = 3f;
-    public void ItemOut(Sprite sprite)
+    private Sprite[] items;
+    public void Start()
+    {
+        items = Resources.LoadAll<Sprite>("Item");
+       
+    }
+    public void ItemOut()
     {
         bool full = Inventory.instance.Full();
         if (!full)
         {
-            var instance = ItemManager.instance.MakeInstance(sprite);
+            var instance = ItemManager.instance.MakeInstance(items[Random.Range(0, items.Length-1)]);
             instance.GetComponent<IngameItem>().State = ObjectState.Fall;
             instance.transform.position = Muzzle.position;
             var force = new Vector3(Random.Range(-1f, 1f) * 100, Random.Range(1f, 1.5f) * 300, Random.Range(-5f, -1f) * 100);
@@ -42,19 +48,22 @@ public class SupplyBox : MonoBehaviour
 
     public void TryItemOut()
     {
-        if(Contents.Count>0)
+        if(Number > 0)
         {
-            ItemOut(Contents[0]);
-            Contents.RemoveAt(0);
+            ItemOut();
+            Number--;
             
         }
-        if(Contents.Count == 0)
+        if(Number == 0)
         {
             transform.DOScale(Vector3.zero, 0.1f)
                 .OnComplete(() => { Destroy(gameObject); });
         }
     }
-    private void OnMouseDown()
+
+
+
+        private void OnMouseDown()
     {
         TryItemOut();
     }
