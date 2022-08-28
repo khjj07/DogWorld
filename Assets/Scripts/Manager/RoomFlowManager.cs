@@ -9,6 +9,7 @@ public class RoomFlowManager : Singleton<RoomFlowManager>
     public Subject<Room> RoomFlow = new Subject<Room>();
     void Start()
     {
+        SoundManager.Instance.PlayBGMSound(1);
         RoomFlow.Subscribe(room => CurrentRoom = room);
     }
     public void SetRoom(Room room)

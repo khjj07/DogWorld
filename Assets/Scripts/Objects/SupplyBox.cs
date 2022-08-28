@@ -24,6 +24,7 @@ public class SupplyBox : MonoBehaviour
         bool full = Inventory.instance.Full();
         if (!full)
         {
+            SoundManager.Instance.PlaySFXSound("box", 1);
             var instance = ItemManager.instance.MakeInstance(items[Random.Range(0, items.Length-1)]);
             instance.GetComponent<IngameItem>().State = ObjectState.Fall;
             instance.transform.position = Muzzle.position;

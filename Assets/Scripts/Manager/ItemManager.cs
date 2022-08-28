@@ -14,6 +14,7 @@ public class ItemManager : Singleton<ItemManager>
     {
         if(itemSprite)
         {
+            SoundManager.Instance.PlaySFXSound("box", 1);
             var instance = Instantiate(IngameItemPrefab.gameObject);
             instance.transform.localScale = new Vector3(4, 4, 1);
             instance.GetComponent<SpriteRenderer>().sprite = itemSprite;

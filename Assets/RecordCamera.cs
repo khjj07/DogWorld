@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Moments;
 using Moments.Encoder;
+
 public class RecordCamera : MonoBehaviour
 {
 	Recorder m_Recorder;
@@ -12,17 +13,33 @@ public class RecordCamera : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-        m_Recorder = GetComponent<Recorder>();
-        m_Recorder.Record();
-        m_Recorder.OnPreProcessingDone = OnProcessingDone;
-        m_Recorder.OnFileSaveProgress = OnFileSaveProgress;
-        m_Recorder.OnFileSaved = OnFileSaved;
+       
     }
 
 	public void Record()
     {
+		SoundManager.Instance.PlaySFXSound("capture", 1);
+		m_Recorder = GetComponent<Recorder>();
+		m_Recorder.Record();
+		m_Recorder.OnPreProcessingDone = OnProcessingDone;
+		m_Recorder.OnFileSaveProgress = OnFileSaveProgress;
+		m_Recorder.OnFileSaved = OnFileSaved;
+		StartCoroutine(Save());
+	}
+
+	public void Capture()
+	{
+		Camera.main.enabled = false;
+		//ScreenCapture.CaptureScreenshot("sekainu_screenshot.png");
+		
+	}
+	public IEnumerator Save()
+    {
+
+		yield return new WaitForSeconds(3f);
 		m_Recorder.Save();
 		m_Progress = 0f;
+		
 	}
 	void OnProcessingDone()
 	{

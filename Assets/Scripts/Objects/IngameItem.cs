@@ -79,6 +79,10 @@ public class IngameItem : MonoBehaviour
     {
       
         if(State.Equals(ObjectState.Fall) && (collision.transform.CompareTag("Floor") || collision.transform.CompareTag("Item")))
+        {
             StateStream.OnNext(ObjectState.Placed);
+            SoundManager.Instance.PlaySFXSound("MP_Blop", 1);
+        }
+            
     }
 }
